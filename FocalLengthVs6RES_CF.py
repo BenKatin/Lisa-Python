@@ -9,9 +9,6 @@ import os
 import matplotlib.pyplot as plt
 import numpy as numpy
 import pandas as pandas
-import pyCyte.ToolBox.SimpleTools as sbox
-import pyCyte.ReadEchoFiles.ReadCSV as csv
-from openpyxl import load_workbook
 import xlrd
 
 #2018
@@ -51,7 +48,7 @@ for item in List525:
         notes = '''   Found 2 files, using:{0}'''.format (f)
 #load MEDMANdb         
       if len (flx) >=1:
-        wb = xlrd.open_workbook(f, on_demand=True)
+        wb = xlrd.open_workbook(f)
         worksheet = wb.sheet_by_name('FocalSweep')
         FocalToF = worksheet.cell(-1,6).value
         print (item, FocalToF, notes)       
