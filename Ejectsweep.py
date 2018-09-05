@@ -10,7 +10,7 @@ import Xcontam as Xcon
 Takes in the local directory of a csv and an Excel file, and returns a dataframe containing the power range, mean value and standard deviation of each collumn of the excel file
 
 """
-class Ejectsheet:
+class EjectSweep:
     """
     Instantiate class with exceldate = "local_directory.xls"
 
@@ -32,10 +32,11 @@ class Ejectsheet:
     """
     def chooseSheet(self,sheetname):
         self.output = self.sheets.GetSheet(sheetname)
+
     """
     returns a DataFrame with 3 collumns and 24 rows using the current chosen sheet
     """
-    def GetData(self):
+    def getProcessedData(self):
         col_names = ['power', 'mean', 'std']
 
         means = []
@@ -56,13 +57,20 @@ class Ejectsheet:
 
         return graphData
 
+    def getData(self):
+        return self.output
+
+    def boxGraph(self):
+        self.output.plot.box()
+        plt.show()
+
 if __name__ == "__main__":
 
-    EJ = Ejectsheet("EjectSweep/20180830_162258_RawVolumeOutput.xlsx")
+    EJ = EjectSweep("EjectSweep/20180830_162258_RawVolumeOutput.xlsx")
 
     print(EJ.getSheets())
 
     EJ.chooseSheet('01_1445_BP_50_ES.xls')
 
-    print(EJ.GetData())
+    print(EJ.getProcessedData())
 
