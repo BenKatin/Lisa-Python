@@ -90,7 +90,7 @@ class EjectSweep:
 
 
                 self.count += 1
-
+        
         fig.subplots_adjust(hspace=.5)
         plt.xticks(nums, powers)
 
