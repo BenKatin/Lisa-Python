@@ -68,9 +68,9 @@ class EjectSweep:
         self.output.boxplot(return_type=dict)
         plt.show()
 
-    def multiPlot(self,pagenumbers, rows, cols,name=None):
+    def multiPlot(self,pagenumbers, rows, cols,rotation = 45,textsize = 7,title=""):
         self.count = 0
-        fig, axes = plt.subplots(rows, cols,sharex=True,sharey=True)  # posible argument:
+        fig, axes = plt.subplots(rows, cols,sharex=True,sharey=True,figsize=(4*cols,3*rows))  # posible argument:
         sheetnames = self.getSheets()
 
         nums = list(x for x in range(1, 25))
@@ -81,18 +81,34 @@ class EjectSweep:
                 count = None
 
         for x in range(0,rows):
+            plt.xticks(rotation=90)
             for y in range(0,cols):
-                data =self.sheets.GetSheet(sheetnames[pagenumbers[self.count]])
-                data.boxplot(ax=axes[x,y],showfliers=False)
-                axes[x, y].set_title(sheetnames[pagenumbers[self.count]])
-                axes[x,y].tick_params(axis='both', which='both', labelsize=6)
-                axes[x,y].set_xticklabels(powers)
+                if(self.count < len(pagenumbers)):
+                    data =self.sheets.GetSheet(sheetnames[pagenumbers[self.count]])
+                    data.boxplot(ax=axes[x,y],showfliers=False)
+                    axes[x, y].set_title(sheetnames[pagenumbers[self.count]])
+                    #axes[x,y].tick_params(axis='x', labelsize=7)
+                    axes[x,y].set_xticklabels(powers,rotation=45)
+
+
+
 
 
                 self.count += 1
-        
-        fig.subplots_adjust(hspace=.5)
-        plt.xticks(nums, powers)
+
+        allaxes = fig.get_axes()
+        for ax in allaxes:
+            ax.tick_params(axis='x', rotation=rotation,labelsize=textsize)
+
+        fig.suptitle(title, fontsize=14)
+
+        fig.text(0.5, 0.02, 'Volume (mL)', ha='center',fontsize = "15")
+        fig.text(0.04, 0.5, 'Power', va='center', rotation='vertical',fontsize = 15)
+
+
+
+
+
 
 
 if __name__ == "__main__":
@@ -107,8 +123,10 @@ if __name__ == "__main__":
 
     sheets = EJ.getSheets() # returns a list containing all the sheet names
 
-    EJ.multiPlot([0,1,2,3],2,2)     # passes in a list containing the sheets to be made into graphs,
-                                    # and the dimensions to create the resulting grid of graphs
+    EJ.multiPlot([0,1,2],2,2,90,7,"graphs")   # Ej.multiplot([index,number,of,data],rows,col,xlabelrotation, xlabelsize, title)
+                                # passes in a list containing the sheets to be made into graphs,
+                                # and the dimensions to create the resulting grid of graphs
+
 
     plt.show()                      #left out of main program, because apparently it causes spyder to crash?
                                     #honestly I dont know how this entire system will work with your setup
