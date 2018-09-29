@@ -68,8 +68,11 @@ class EjectSweep:
         self.output.boxplot(return_type=dict)
         plt.show()
 
+    """
+    Graphs a plot of all the sheets given from the excel file
+    """
     def multiPlot(self,pagenumbers, rows, cols,rotation = 45,textsize = 7,title=""):
-        self.count = 0
+        count = 0
         fig, axes = plt.subplots(rows, cols,sharex=True,sharey=True,figsize=(4*cols,3*rows))  # posible argument:
         sheetnames = self.getSheets()
 
@@ -83,27 +86,107 @@ class EjectSweep:
         for x in range(0,rows):
             plt.xticks(rotation=90)
             for y in range(0,cols):
-                if(self.count < len(pagenumbers)):
-                    data =self.sheets.GetSheet(sheetnames[pagenumbers[self.count]])
+                if(count < len(pagenumbers)):
+                    data =self.sheets.GetSheet(sheetnames[pagenumbers[count]])
                     data.boxplot(ax=axes[x,y],showfliers=False)
-                    axes[x, y].set_title(sheetnames[pagenumbers[self.count]])
-                    #axes[x,y].tick_params(axis='x', labelsize=7)
-                    axes[x,y].set_xticklabels(powers,rotation=45)
+                    axes[x, y].set_title(sheetnames[pagenumbers[count]])
+                    axes[x,y].set_xticklabels(powers)
 
-
-
-
-
-                self.count += 1
+                count += 1
 
         allaxes = fig.get_axes()
         for ax in allaxes:
+
             ax.tick_params(axis='x', rotation=rotation,labelsize=textsize)
+
+            xTickVisibility = True
+            for index, label in enumerate(ax.xaxis.get_ticklabels()):
+                if (not (xTickVisibility)):
+                    label.set_visible(False)
+                xTickVisibility = not (xTickVisibility)
+
+
 
         fig.suptitle(title, fontsize=14)
 
         fig.text(0.5, 0.02, 'Volume (mL)', ha='center',fontsize = "15")
         fig.text(0.04, 0.5, 'Power', va='center', rotation='vertical',fontsize = 15)
+
+
+    """
+    recursivly calculates the best fit for where the y axis is equal to 100 for a list of sheet numbers given and a number of time to iterate through
+    """
+    def fit(self,pagenumbers,iterations):
+
+        fits = []
+        solutions = []
+
+
+
+        for number in pagenumbers:
+            data = self.sheets.GetSheet(number)
+
+            medians = data.median()
+
+            xlist = list(x * 4 / 100 for x in range(-11, 13))
+
+
+
+            y = list(medians)
+
+
+            fit = numpy.polyfit(xlist, y, 1)
+            print(fit)
+
+            solutions.append( (100 - fit[1]) / fit[0])
+
+        fits.append(solutions)
+        fits = self.recursiveFit(pagenumbers, iterations, fits)
+
+        formattedFits = []
+
+        while (len(fits[0]) > 0):
+            tempList = []
+            for fitList in fits:
+                tempList.append(fitList.pop(0))
+
+            formattedFits.append(tempList)
+
+        return formattedFits
+
+
+    def recursiveFit(self,pagenumbers,iterations,fits):
+        if(iterations > 1):
+            solutions = []
+            for number in pagenumbers:
+
+                data = self.sheets.GetSheet(number)
+
+                roundingNumber = int(round(fits[-1][number] * 25)) + 11
+
+
+                medians = data.median()
+
+                if(roundingNumber < 3):
+                    roundingNumber = 3
+                elif(roundingNumber > 20):
+                    roundingNumber = 20
+
+                xlist = list(x * 4 / 100 for x in range(-11, 13))[roundingNumber-3:roundingNumber+3]
+
+                y = list(medians)[roundingNumber-3:roundingNumber+3]
+
+                fit = numpy.polyfit(xlist, y, 1)
+
+                solutions.append((100 - fit[1]) / fit[0])
+
+            fits.append(solutions)
+            return(self.recursiveFit(pagenumbers,iterations-1,fits))
+        else:
+            return(fits)
+
+
+
 
 
 
@@ -116,14 +199,16 @@ if __name__ == "__main__":
 
     EJ = EjectSweep("EjectSweep/20180830_162258_RawVolumeOutput.xlsx")  # select an excel file as the file to be
                                                                         # used by the EjectSweepClass
+    fitList = EJ.fit([0,1,2,3],4)   # pass in the list of which graphs in excel to be charted and the number of time to iterate through the fitting process
+    print(fitList)                  # returns a list of lists, where each list is one excel sheets fits
 
-    pgZero = EJ.getData(0)  # pass in either the sheet name or the sheet index starting
-                            # from 0 and get the raw dataframe containing the data
+
+
 
 
     sheets = EJ.getSheets() # returns a list containing all the sheet names
-
-    EJ.multiPlot([0,1,2],2,2,90,7,"graphs")   # Ej.multiplot([index,number,of,data],rows,col,xlabelrotation, xlabelsize, title)
+    
+    EJ.multiPlot([0,1,2,3],2,2,90,7,"graphs")   # Ej.multiplot([index,number,of,data],rows,col,xlabelrotation, xlabelsize, title)
                                 # passes in a list containing the sheets to be made into graphs,
                                 # and the dimensions to create the resulting grid of graphs
 
