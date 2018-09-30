@@ -1,0 +1,4 @@
+# Arne Vandenbroucke 1-30-2016 -- Labcyte Inc
+# Here's how to regenarate documentation:: 
+doxygen Doxyfile 
+# Here's some stuff I found online : https://blogs.cs.st-andrews.ac.uk/jfdm/2013/04/04/documenting-python-using-doxygen/

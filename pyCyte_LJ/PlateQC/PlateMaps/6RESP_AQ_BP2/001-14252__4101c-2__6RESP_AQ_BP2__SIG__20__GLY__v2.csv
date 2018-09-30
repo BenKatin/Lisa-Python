@@ -1,0 +1,7 @@
+Col,Row,Well,mConc,mFillHeight,mFluid,mImpedance,mVolume
+0,0,A1,20,0,GLY,1.71,2000
+1,0,A2,20,0,GLY,1.71,2000
+2,0,A3,20,0,GLY,1.71,2000
+0,1,B1,20,0,GLY,1.71,2000
+1,1,B2,20,0,GLY,1.71,2000
+2,1,B3,20,0,GLY,1.71,2000

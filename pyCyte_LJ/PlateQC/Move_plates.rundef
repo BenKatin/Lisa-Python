@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<RunSet Name="">
+     <RunSetOwner />
+     <RunSetComments />
+     <Run RunID="0" RunName="Move_plates" RunDelayInSeconds="0" ScheduleRunTime="1/1/0001 12:00:00 AM" SimultaneousAllowed="False" RunPriority="100">
+          <Definition>
+               <ReferenceID />
+               <Comments />
+               <Owner>Labcyte</Owner>
+          </Definition>
+          <Parameters>
+               <Parameter name="InitializeDevices">true</Parameter>
+               <Parameter name="InventoryPlates">false</Parameter>
+               <Parameter name="AutoAssignBarcodedPlateLocations">false</Parameter>
+               <Parameter name="InheritPlateStorageDefinitions">false</Parameter>
+               <Parameter name="AllowWarningPlates">false</Parameter>
+               <Parameter name="AllowErrorPlates">false</Parameter>
+               <Parameter name="AllowMissingPlates">false</Parameter>
+          </Parameters>
+          <Notifications>
+               <Users />
+               <NotifyConditions>
+                    <NotifyCondition name="RunStarted">false</NotifyCondition>
+                    <NotifyCondition name="RunRequiresUserAttention">false</NotifyCondition>
+                    <NotifyCondition name="RunExecutionError">false</NotifyCondition>
+                    <NotifyCondition name="RunFinished">false</NotifyCondition>
+                    <NotifyCondition name="RunCompletedSuccessfully">false</NotifyCondition>
+                    <NotifyCondition name="RunCompletedWithWarnings">false</NotifyCondition>
+                    <NotifyCondition name="RunCompletedWithErrors">false</NotifyCondition>
+                    <NotifyCondition name="RunStopped">false</NotifyCondition>
+                    <NotifyCondition name="RunAborted">false</NotifyCondition>
+                    <NotifyCondition name="RunReports">false</NotifyCondition>
+                    <NotifyCondition name="RunValidationReport">false</NotifyCondition>
+               </NotifyConditions>
+          </Notifications>
+          <PODProtocol Name="LC_MoveRack01toRack03" Version="1.0" Root="\\fserver\people\LilianC\Automation\Protocols">
+               <EchoProtocol>
+                    <DataSetName>EchoProtocol</DataSetName>
+                    <UsingEchoApplication>False</UsingEchoApplication>
+                    <SelectedEcho>EchoTest</SelectedEcho>
+                    <Path />
+                    <IgnoreChecksum>True</IgnoreChecksum>
+                    <ProtocolChecksum />
+                    <runoptions>
+                         <numofplate>5</numofplate>
+                    </runoptions>
+               </EchoProtocol>
+               <PlateMap>
+                    <Plate EchoPlateID="0" PlateName="Plate 001" PlateType="384LDV" Barcode="" LidType="" PlateCategory="Unknown" LocationURL="deck://Deck/1/5/" FinalLocation="deck://Deck/3/1/" PlateAccess="Unknown" PreRunActionSetName="" RunActionSetName="Selected Plates" PostRunActionSetName="" StorageDeviceSetName="" EchoTemplate="" />
+                    <Plate EchoPlateID="1" PlateName="Plate 002" PlateType="384LDV" Barcode="" LidType="" PlateCategory="Unknown" LocationURL="deck://Deck/1/11/" FinalLocation="deck://Deck/3/2/" PlateAccess="Unknown" PreRunActionSetName="" RunActionSetName="Selected Plates" PostRunActionSetName="" StorageDeviceSetName="" EchoTemplate="" />
+                    <Plate EchoPlateID="2" PlateName="Plate 003" PlateType="384LDV" Barcode="" LidType="" PlateCategory="Unknown" LocationURL="deck://Deck/1/12/" FinalLocation="deck://Deck/3/3/" PlateAccess="Unknown" PreRunActionSetName="" RunActionSetName="Selected Plates" PostRunActionSetName="" StorageDeviceSetName="" EchoTemplate="" />
+                    <Plate EchoPlateID="3" PlateName="Plate 004" PlateType="384LDV" Barcode="" LidType="" PlateCategory="Unknown" LocationURL="deck://Deck/1/14/" FinalLocation="deck://Deck/3/4/" PlateAccess="Unknown" PreRunActionSetName="" RunActionSetName="Selected Plates" PostRunActionSetName="" StorageDeviceSetName="" EchoTemplate="" />
+                    <Plate EchoPlateID="4" PlateName="Plate 005" PlateType="384LDV" Barcode="" LidType="" PlateCategory="Unknown" LocationURL="deck://Deck/1/18/" FinalLocation="deck://Deck/3/5/" PlateAccess="Unknown" PreRunActionSetName="" RunActionSetName="Selected Plates" PostRunActionSetName="" StorageDeviceSetName="" EchoTemplate="" />
+               </PlateMap>
+               <RunActions>
+                    <RunActions>
+                         <ActionSet Name="Selected Plates">
+                              <Read_Barcode>
+                                   <BarcodeMismatchString>Mark plate as error and continue</BarcodeMismatchString>
+                                   <BarcodeMissingString>Mark plate as error and continue</BarcodeMissingString>
+                                   <ErrorPlateDispositionString>Final Location</ErrorPlateDispositionString>
+                                   <Schedule>Immediately</Schedule>
+                                   <UserPriority>Normal</UserPriority>
+                                   <DeviceName />
+                              </Read_Barcode>
+                         </ActionSet>
+                    </RunActions>
+                    <PreProtocolRunActions>
+                         <ActionSet Name="actions" />
+                    </PreProtocolRunActions>
+                    <PostProtocolRunActions>
+                         <ActionSet Name="actions" />
+                    </PostProtocolRunActions>
+                    <ExternalValidatorRunActions>
+                         <ActionSet Name="actions" />
+                    </ExternalValidatorRunActions>
+               </RunActions>
+               <FluidMap />
+               <PlateInserts />
+               <SealerInserts />
+               <CounterBalances>
+                    <UserAssignedCounterBalance />
+               </CounterBalances>
+               <StorageSets />
+          </PODProtocol>
+     </Run>
+     <PlateStorage ClearFinalStorageLocations="True">
+     </PlateStorage>
+</RunSet>

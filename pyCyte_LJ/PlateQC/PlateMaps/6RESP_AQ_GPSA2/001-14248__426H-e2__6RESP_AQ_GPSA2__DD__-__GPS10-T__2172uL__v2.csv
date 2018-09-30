@@ -1,0 +1,7 @@
+Col,Row,Well,mConc,mFillHeight,mFluid,mImpedance,mVolume
+0,0,A1,0,0,GPS10-T,1.48,2172
+1,0,A2,10,0,GPS10-T,1.59,2172
+2,0,A3,10,0,GPS10-T,1.59,0
+0,1,B1,20,0,GPS10-T,1.71,2172
+1,1,B2,30,0,GPS10-T,1.82,2172
+2,1,B3,30,0,GPS10-T,1.82,0
