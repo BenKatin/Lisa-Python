@@ -4,6 +4,12 @@ Created on Wed Aug 17 14:20:42 2016
 
 @author: ljungherr
 """
+
+from Clas import Classification as clas
+from Clas import Kernels as kern
+from Clas import Kernels_norm as kern_norm
+import numpy as numpy
+
 #fl = getListOfPlateSurveyFiles()
 #       load and run Classification.py before this file.
 
@@ -15,11 +21,11 @@ def profile(sdata):
          Hwell = 'H' + str(col)
          Iwell = 'I' + str(col)
 
-         Hdata = findRowByWellName(Hwell, sdata)
-         Idata = findRowByWellName(Iwell, sdata)
-         
-         H_Vpp = getBBValue (Hdata)
-         I_Vpp = getBBValue (Idata)
+         Hdata = clas.findRowByWellName(Hwell, sdata)
+         Idata = clas.findRowByWellName(Iwell, sdata)
+
+         H_Vpp = clas.getBBValue (Hdata)
+         I_Vpp = clas.getBBValue (Idata)
 #   print (H_Vpp, I_Vpp)   Test because not all platesurvey files contain all wells
          if H_Vpp and I_Vpp:
              avgVpp = round((H_Vpp + I_Vpp)/2,4)
@@ -38,11 +44,11 @@ def profile_TBV(sdata):
          Hwell = 'H' + str(col)
          Iwell = 'I' + str(col)
 
-         Hdata = findRowByWellName(Hwell, sdata)
-         Idata = findRowByWellName(Iwell, sdata)
-         
-         H_Vpp = getTBValue (Hdata)
-         I_Vpp = getTBValue (Idata)
+         Hdata = clas.findRowByWellName(Hwell, sdata)
+         Idata = clas.findRowByWellName(Iwell, sdata)
+
+         H_Vpp = clas.getTBValue (Hdata)
+         I_Vpp = clas.getTBValue (Idata)
 #   print (H_Vpp, I_Vpp)   Test because not all platesurvey files contain all wells
          if H_Vpp and I_Vpp:
              avgVpp = round((H_Vpp + I_Vpp)/2,4)
@@ -55,9 +61,9 @@ def profile_rows(sdata,rows):
          li.append(0)
          for row in range (0, len(rows)):
              wellname = rows[row] + str(col+1)
-             welldata = findRowByWellName(wellname, sdata)
+             welldata = clas.findRowByWellName(wellname, sdata)
              if welldata:
-                 value = getBBValue(welldata)
+                 value = clas.getBBValue(welldata)
                  li[col] += value
          li[col] = round (li[col]/len(rows),3)
      return li
@@ -69,9 +75,9 @@ def profile_exclude_outliers(sdata,rows):
          li.append ([])
          for row in range (0, len(rows)):
              wellname = rows[row] + str(col+1)
-             welldata = findRowByWellName(wellname, sdata)
+             welldata = clas.findRowByWellName(wellname, sdata)
              if welldata:
-                 value = getBBValue(welldata)
+                 value = clas.getBBValue(welldata)
                  li[col].append (value)
          wellMean = numpy.mean(li[col])
          fivesig = 5* numpy.std(li[col])
@@ -124,11 +130,11 @@ def profile_Thk_12(sdata):
          Hwell = 'H' + str(col)
          Iwell = 'I' + str(col)
 
-         Hdata = findRowByWellName(Hwell, sdata)
-         Idata = findRowByWellName(Iwell, sdata)
-         
-         H_val = getMembraneThickness (Hdata)
-         I_val = getMembraneThickness (Idata)
+         Hdata = clas.findRowByWellName(Hwell, sdata)
+         Idata = clas.findRowByWellName(Iwell, sdata)
+
+         H_val = clas.getMembraneThickness (Hdata)
+         I_val = clas.getMembraneThickness (Idata)
  #   print (H_Vpp, I_Vpp)  Test because not all platesurvey files contain all wells
          avgval = 0
          if H_val and I_val:
@@ -146,11 +152,11 @@ def profile_Thk(sdata):
          Hwell = 'H' + str(col)
          Iwell = 'I' + str(col)
 
-         Hdata = findRowByWellName(Hwell, sdata)
-         Idata = findRowByWellName(Iwell, sdata)
-         
-         H_val = getMembraneThickness (Hdata)
-         I_val = getMembraneThickness (Idata)
+         Hdata = clas.findRowByWellName(Hwell, sdata)
+         Idata = clas.findRowByWellName(Iwell, sdata)
+
+         H_val = clas.getMembraneThickness (Hdata)
+         I_val = clas.getMembraneThickness (Idata)
  #   print (H_Vpp, I_Vpp)  Test because not all platesurvey files contain all wells
          avgval = 0
          if H_val and I_val:
@@ -169,11 +175,11 @@ def profile_ToF_12(sdata):
          Hwell = 'H' + str(col)
          Iwell = 'I' + str(col)
 
-         Hdata = findRowByWellName(Hwell, sdata)
-         Idata = findRowByWellName(Iwell, sdata)
-         
-         H_val = getBBToF (Hdata)
-         I_val = getBBToF (Idata)
+         Hdata = clas.findRowByWellName(Hwell, sdata)
+         Idata = clas.findRowByWellName(Iwell, sdata)
+
+         H_val = clas.getBBToF (Hdata)
+         I_val = clas.getBBToF (Idata)
  #   print (H_Vpp, I_Vpp)  Test because not all platesurvey files contain all wells
          if H_val and I_val:
              avgval = round((H_val + I_val)/2,3)
@@ -188,11 +194,11 @@ def profile_ToF(sdata):
          Hwell = 'H' + str(col)
          Iwell = 'I' + str(col)
 
-         Hdata = findRowByWellName(Hwell, sdata)
-         Idata = findRowByWellName(Iwell, sdata)
-         
-         H_val = getBBToF (Hdata)
-         I_val = getBBToF (Idata)
+         Hdata = clas.findRowByWellName(Hwell, sdata)
+         Idata = clas.findRowByWellName(Iwell, sdata)
+
+         H_val = clas.getBBToF (Hdata)
+         I_val = clas.getBBToF (Idata)
          if H_val and I_val:
              avgval = round((H_val + I_val)/2,3)
              li.append(avgval)
@@ -204,13 +210,13 @@ def profile_imped(sdata):
          Hwell = 'H' + str(col)
          Iwell = 'I' + str(col)
 
-         Hdata = findRowByWellName(Hwell, sdata)
-         Idata = findRowByWellName(Iwell, sdata)
-         
-         H_num = getTBValue (Hdata)
-         I_num = getTBValue (Idata)
-         H_denom = getBBValue(Hdata)
-         I_denom = getBBValue(Idata)
+         Hdata = clas.findRowByWellName(Hwell, sdata)
+         Idata = clas.findRowByWellName(Iwell, sdata)
+
+         H_num = clas.getTBValue (Hdata)
+         I_num = clas.getTBValue (Idata)
+         H_denom = clas.getBBValue(Hdata)
+         I_denom = clas.getBBValue(Idata)
          if (H_num and I_num and H_denom and I_denom):           
              H_ratio = H_num/H_denom
              I_ratio = I_num/I_denom
@@ -228,19 +234,19 @@ def profile_corrBBVpp (sdata, fitFunction, xLimits):
         Hwell = 'H' + str(col)
         Iwell = 'I' + str(col)
         
-        Hdata = findRowByWellName(Hwell, sdata)
-        Idata = findRowByWellName(Iwell, sdata)
-        
-        if Hdata and Idata:        
-        
-            H_BBToF = (getBBToF (Hdata))
-            I_BBToF = (getBBToF (Hdata))
+        Hdata = clas.findRowByWellName(Hwell, sdata)
+        Idata = clas.findRowByWellName(Iwell, sdata)
+
+        if Hdata and Idata:
+
+            H_BBToF = (clas.getBBToF (Hdata))
+            I_BBToF = (clas.getBBToF (Hdata))
                
             HFactor = fitFunction(H_BBToF)
             IFactor = fitFunction(I_BBToF)
         
-            Hraw = getBBValue (Hdata)
-            Iraw = getBBValue (Idata)
+            Hraw = clas.getBBValue (Hdata)
+            Iraw = clas.getBBValue (Idata)
         
             Hcorr = Hraw * scaleFactor/HFactor
             Icorr = Iraw * scaleFactor/IFactor

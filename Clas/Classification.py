@@ -16,6 +16,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import pyCyte.ReadEchoFiles.ReadCSV as csv
 import pyCyte.ToolBox.SimpleTools as sbox
+from Clas import Kernels as kern
+from Clas import Kernels_norm as kern_norm
+from Clas import PlateProfile as plate
 #import numpy.corrcoef as cor
 
 def getListOfPlateSurveyFiles():
@@ -135,7 +138,7 @@ def avgThick(welllist, thisdata):
     Thicksum = 0
     for well in welllist:
         rowdata = findRowByWellName(well, thisdata)
-        Thisksum += getMembraneThickness (rowdata)
+        Thicksum += getMembraneThickness (rowdata)
     return Thicksum/len(welllist)
 
 #Return BB Vpp from one well record from survey file.    
@@ -247,18 +250,18 @@ def getFocalSweepFilename():
 def getFocalSweepFit(filename):
     # input Focal Sweep file name; return 3rd order polynomial fit constants  (Headerrow = 8 or 13)
     headerrow = 13
-    header = csv.getCSVHeader(filename, headerrow) 
-    
+    header = csv.getCSVHeader(filename, headerrow)
+
     tmpdat = csv.readCSV(filename, True, tuple(header))
-    tmdat = [ row for row in tmpdat if row['TransducerZ (um)'] != None and row['BB Amp (Vpp)'] != None ] 
+    tmdat = [ row for row in tmpdat if row['TransducerZ (um)'] != None and row['BB Amp (Vpp)'] != None ]
     sweepdat = tmdat[1:]
-    
+
     # get x and y vectors
     x = []; y = []
     for s in sweepdat:
         x.append (s['BB ToF (us)'])
         y.append (s['BB Amp (Vpp)'])
-    
+
     xx = numpy.array(x, dtype = 'float')
     yy = numpy.array(y, dtype = 'float')
     xlimits = np.linspace (xx[0], xx[-1],3)
@@ -267,7 +270,7 @@ def getFocalSweepFit(filename):
     const = numpy.polyfit(xx, yy, 3)
     ft = np.poly1d(const)
     return (ft, xlimits)
-	
+
 #calculate Correction function from a single ToF value and 3rd order fit contstants.
 def findCorrFunction(ToF, constants):
     F = (((constants[0])*ToF+constants[1])*ToF+constants[2])*ToF+constants[3]
@@ -277,8 +280,9 @@ def findCorrFunction(ToF, constants):
 def findCorrFunctionLinear(ToF, linearconst):
     F = (linearconst[0] * ToF - linearconst[1])
     return F
-# In Brent's data: Seahorse Article 0:   ToF = 34.761    linearconst = [0.1001, 2.5001]
-    
-OP_92 = [0.5983, 0.6004, 0.6072, 0.6059, 0.5993, 0.5924, 0.5936, 0.6018, 0.6099, 0.6069, 0.6045, 0.6049, 0.6054, 0.6057, 0.6074, 0.6107, 0.6032, 0.5949, 0.5926, 0.6, 0.607, 0.608, 0.6007, 0.5987]
- 
-r6_92 = [0.5905, 0.5898, 0.5931, 0.6067, 0.6086, 0.5888, 0.5926, 0.6103, 0.5995, 0.5972, 0.5985, 0.6057, 0.6111, 0.6003, 0.5988, 0.6002, 0.6117, 0.5946, 0.5932, 0.6128, 0.6088, 0.5944, 0.5916, 0.5925]
+if __name__ == "__main__":
+    # In Brent's data: Seahorse Article 0:   ToF = 34.761    linearconst = [0.1001, 2.5001]
+
+    OP_92 = [0.5983, 0.6004, 0.6072, 0.6059, 0.5993, 0.5924, 0.5936, 0.6018, 0.6099, 0.6069, 0.6045, 0.6049, 0.6054, 0.6057, 0.6074, 0.6107, 0.6032, 0.5949, 0.5926, 0.6, 0.607, 0.608, 0.6007, 0.5987]
+
+    r6_92 = [0.5905, 0.5898, 0.5931, 0.6067, 0.6086, 0.5888, 0.5926, 0.6103, 0.5995, 0.5972, 0.5985, 0.6057, 0.6111, 0.6003, 0.5988, 0.6002, 0.6117, 0.5946, 0.5932, 0.6128, 0.6088, 0.5944, 0.5916, 0.5925]cl
